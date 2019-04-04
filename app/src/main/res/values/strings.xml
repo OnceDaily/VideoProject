@@ -1,0 +1,12 @@
+<resources>
+    <string name="app_name">VideoProject</string>
+
+
+    <string name="main_menu_surface">surface</string>
+    <string name="main_menu_video">video</string>
+    <string name="main_menu_vitamio">vitamio</string>
+
+    <string name="main_menu_screen_shot">截屏</string>
+
+
+</resources>
