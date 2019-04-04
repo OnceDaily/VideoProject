@@ -31,7 +31,9 @@ public class ScreenShotActivity extends AppCompatActivity implements View.OnClic
 
     @Override
     public void onClick(View view) {
-        iv.setImageBitmap(takeScreenShotOfView(view));
+        Bitmap bitmap = takeScreenShotOfView(view);
+        Util.saveBitmapToLocal(bitmap);
+        iv.setImageBitmap(bitmap);
     }
 
 
