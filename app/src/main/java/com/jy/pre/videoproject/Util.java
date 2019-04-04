@@ -1,6 +1,8 @@
 package com.jy.pre.videoproject;
 
+import android.content.res.Resources;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Environment;
 
 import java.io.File;
@@ -28,5 +30,24 @@ public class Util {
                 }
             }
         }
+    }
+
+    public static Bitmap compressBitmap(String pathName , int height, int width){
+        Bitmap bitmap = null;
+
+        BitmapFactory.Options options = new BitmapFactory.Options();
+        options.inJustDecodeBounds = true;//设置为true，可以获取到图片的宽高，但不占用内存，防止图片太大产生oom;
+        BitmapFactory.decodeFile(pathName,options);
+        int bitmapHeight = options.outHeight;//原始图片的宽高
+        int bitmapWidth = options.outWidth;
+        options.inJustDecodeBounds = false;
+
+        int heightSize = bitmapHeight/height;
+        int widthSize = bitmapWidth/width;
+
+        options.inSampleSize = (heightSize <= widthSize)? heightSize:widthSize;
+        bitmap = BitmapFactory.decodeFile(pathName,options);
+
+        return bitmap;
     }
 }
