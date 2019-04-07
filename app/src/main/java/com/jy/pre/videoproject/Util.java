@@ -1,18 +1,31 @@
 package com.jy.pre.videoproject;
 
-import android.content.res.Resources;
+import android.app.Activity;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.os.Build;
 import android.os.Environment;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
+import android.widget.Toast;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Util {
     public static void saveBitmapToLocal(Bitmap bitmap){
         File drFile = new File(Environment.getExternalStorageDirectory(),"VideoProject");
-        if (!drFile.exists())
+        if (!drFile.exists()){
             drFile.mkdir();
+            System.out.print("mkdir success");
+        }
         File file = new File(drFile,System.currentTimeMillis()+".jpg");
         FileOutputStream fos = null;
         try {
@@ -22,7 +35,7 @@ public class Util {
         } catch (Exception e) {
             e.printStackTrace();
         }finally {
-            if (fos == null) {
+            if (fos != null) {
                 try {
                     fos.close();
                 } catch (Exception e) {
@@ -47,6 +60,40 @@ public class Util {
 
         options.inSampleSize = (heightSize <= widthSize)? heightSize:widthSize;
         bitmap = BitmapFactory.decodeFile(pathName,options);
+
+        return bitmap;
+    }
+
+
+    public static void  checkUsePermission(Activity activity, String[] perms, int requestCode){
+        List<String> requestPerms = new ArrayList<>();
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M){
+            for (int i = 0; i < perms.length; i++) {
+              if (ContextCompat.checkSelfPermission(activity,perms[i]) != PackageManager.PERMISSION_GRANTED){
+                  requestPerms.add(perms[i]);
+              }
+            }
+            if (requestPerms.isEmpty())
+                Toast.makeText(activity,"已获取权限",Toast.LENGTH_SHORT).show();
+            else {
+                String[] permission = requestPerms.toArray(new String[requestPerms.size()]);
+                ActivityCompat.requestPermissions(activity,permission,requestCode);
+            }
+        }
+    }
+
+    public static Bitmap loadImage (String imageUrl){
+        Bitmap bitmap = null;
+        try {
+            URL url = new URL(imageUrl);
+            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+            conn.connect();
+            InputStream is =  conn.getInputStream();
+            bitmap = BitmapFactory.decodeStream(is);
+            is.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
         return bitmap;
     }

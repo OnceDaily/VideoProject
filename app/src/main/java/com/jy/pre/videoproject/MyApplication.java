@@ -5,6 +5,8 @@ import android.app.Application;
 import android.os.Build;
 import android.support.v4.content.ContextCompat;
 
+import java.security.Permission;
+
 public class MyApplication extends Application {
 
     private static MyApplication application;
@@ -26,7 +28,7 @@ public class MyApplication extends Application {
 
     public void checkUsePermission(){
 
-        if (Build.VERSION.SDK_INT >= 23){
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M){
            int permissionCheck =  ContextCompat.checkSelfPermission(this, Manifest.permission_group.STORAGE);
 
         }
