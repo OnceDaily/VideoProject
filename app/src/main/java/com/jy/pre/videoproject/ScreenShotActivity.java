@@ -11,7 +11,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.Toast;
 
+import com.jy.pre.videoproject.view.CircleProgressView;
 
 
 public class ScreenShotActivity extends AppCompatActivity implements View.OnClickListener {
@@ -22,6 +24,8 @@ public class ScreenShotActivity extends AppCompatActivity implements View.OnClic
 
     private String url = "http://img1.xiazaizhijia.com/walls/20160927/1920x1200_dec5fdacc3059ca.jpg";
 
+    private CircleProgressView circleProgressView;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -30,7 +34,21 @@ public class ScreenShotActivity extends AppCompatActivity implements View.OnClic
         play = findViewById(R.id.bt_screen_shot);
         iv = findViewById(R.id.iv_show);
         play.setOnClickListener(this);
+        circleProgressView = findViewById(R.id.circleProgressView);
+        circleProgressView.setProgressNum(100,3000);
+        circleProgressView.setOnProgressListener(new CircleProgressView.OnProgressListener() {
+            @Override
+            public void onProgress(float interpolatedTime) {
+                System.out.println(interpolatedTime+"%");
+            }
+        });
+        circleProgressView.setOnClickListener(new View.OnClickListener(){
 
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(ScreenShotActivity.this,"OK",Toast.LENGTH_SHORT);
+            }
+        });
     }
 
     @Override
